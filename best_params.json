@@ -1,0 +1,11 @@
+{
+  "colsample_bylevel": 0.5466232480392754,
+  "colsample_bynode": 0.9069594961304306,
+  "colsample_bytree": 0.698440872861886,
+  "gamma": 0.7149257753413591,
+  "max_depth": 5,
+  "min_child_weight": 65,
+  "reg_alpha": 0.1294543773037284,
+  "reg_lambda": 0.16800541022842516,
+  "subsample": 0.8895556450751974
+}
