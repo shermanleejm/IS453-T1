@@ -20,7 +20,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { red } from '@mui/material/colors';
 
-const lsKey = 'RandyBankUsername';
+export const lsKey = 'RandyBankUsername';
 
 const ApplicantDetails = () => {
   const [payload, setPayload] = React.useState({

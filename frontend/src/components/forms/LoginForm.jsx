@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { lsKey } from './ApplicantDetails';
 
 const LoginForm = () => {
   const [username, setUsername] = React.useState('');
@@ -85,7 +86,8 @@ const LoginForm = () => {
                         if (res.status !== 200) {
                           setError(true);
                         } else {
-                          history.push('/loan_amount');
+                          localStorage.setItem(lsKey, username);
+                          history.push('/credit_score');
                         }
                       })
                       .catch((err) => alert(`Backend is down sorry about this! ${err}`))

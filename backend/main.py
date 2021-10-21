@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, g
+from numpy.core.fromnumeric import sort
 import pandas as pd
 import xgboost as xgb
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -41,7 +42,9 @@ amount_prediction_cols = [
     "CNT_CHILDREN",
 ]
 
-personal_info = ["name", "username", "password", "dob"]
+personal_info = ["name", "username", "password", "dob", "ts"]
+
+AVERAGE_RMSE = 80000
 
 
 def execute_sql(sql):
@@ -61,6 +64,7 @@ def migrations():
         username text primary key,
         password text,
         dob text,
+        ts datetime default current_timestamp,
     """
     cols_sql = []
     for col in final_cols_unbanked_refined:
@@ -98,6 +102,11 @@ def new_application():
     execute_sql(sql)
 
     return jsonify("done"), 200
+
+
+@app.route("/get_rmse", methods=["GET"])
+def get_rmse():
+    return jsonify(AVERAGE_RMSE)
 
 
 def get_data(username):
@@ -163,6 +172,60 @@ def login():
     if len(res) == 0:
         return jsonify("No such account"), 201
     return "done", 200
+
+
+@app.route("/recommendations", methods=["GET"])
+def recommendations():
+    ideal = {
+        "DAYS_EMPLOYED": {"mean": -2438.111433881319, "std": 2372.375648763242},
+        "AMT_GOODS_PRICE": {"mean": 542738.5067752501, "std": 373786.3801299267},
+        "DAYS_BIRTH": {"mean": 44.214281811217745, "std": 11.956693909132996},
+        "AMT_CREDIT": {"mean": 602651.1583546175, "std": 406847.90749584715},
+        "AMT_INCOME_TOTAL": {"mean": 169077.4721999809, "std": 110476.90792473988},
+    }
+
+    good_rec = {
+        "DAYS_EMPLOYED": "You seem secure enough in your job to secure a loan.",
+        "AMT_GOODS_PRICE": "The amount of a the loan that goes towards your business is just right.",
+        "DAYS_BIRTH": "You are at a great age to take out a loan.",
+        "AMT_CREDIT": "Your previous application has a good amount.",
+        "AMT_INCOME_TOTAL": "You are earning enough to secure a loan",
+    }
+
+    bad_rec = {
+        "DAYS_EMPLOYED": "You might need to work a bit longer.",
+        "AMT_GOODS_PRICE": "You might want to consider allocating more of the loan for your business.",
+        "DAYS_BIRTH": "You might want to wait a while longer before applying for a loan.",
+        "AMT_CREDIT": "You might not be applying for the right amount.",
+        "AMT_INCOME_TOTAL": "You might want to consider working longer before taking a loan",
+    }
+
+    word_map = {
+        "DAYS_EMPLOYED": "Employment History",
+        "AMT_GOODS_PRICE": "Amount allocated for spending on goods",
+        "DAYS_BIRTH": "Your Age",
+        "AMT_CREDIT": "Loan Amount",
+        "AMT_INCOME_TOTAL": "Your annual income",
+    }
+    username = request.args.get("username", None)
+    if not username:
+        return jsonify("Missing name param"), 422
+
+    data = get_data(username)
+    for k, v in data.items():
+        data[k] = v
+
+    ## 0 means its okay
+    ## 1 means needs improvement
+    ## abs(val - mean) > std means 1
+    res = {}
+    for k in ideal.keys():
+        if abs(data[k] - ideal[k]["mean"]) > ideal[k]["std"]:
+            res[word_map[k]] = [1, bad_rec[k]]
+        else:
+            res[word_map[k]] = [0, good_rec[k]]
+
+    return jsonify(res), 200
 
 
 if __name__ == "__main__":

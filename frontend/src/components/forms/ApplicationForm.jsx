@@ -2,6 +2,7 @@ import { Button, Grid, Tab, Tabs, Typography } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import ApplicantDetails from './ApplicantDetails';
+import CreditScore from './CreditScore';
 
 const SwitchRender = (index) => {
   switch (index) {
@@ -9,7 +10,7 @@ const SwitchRender = (index) => {
       return <ApplicantDetails />;
 
     case 1:
-      return <div>{localStorage.getItem('RandyBankUsername')}</div>;
+      return <CreditScore />;
 
     default:
       break;
@@ -27,11 +28,6 @@ const ApplicationForm = (props) => {
           height: '100%',
           overflowX: 'hidden',
           backgroundColor: '#f0f0f0',
-          // position: 'fixed',
-          // display: 'flex',
-          // flexDirection: 'column',
-          // justifyContent: 'center',
-          // alignItems: 'center',
         }}
       >
         <Button fullWidth onClick={() => history.push('/')}>
