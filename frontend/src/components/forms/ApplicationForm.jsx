@@ -1,4 +1,15 @@
-import { Button, Grid, Tab, Tabs, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  Grid,
+  MenuItem,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+  Select,
+  InputLabel,
+} from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import DateAdapter from '@mui/lab/AdapterMoment';
@@ -7,33 +18,35 @@ import { NumberFormatCustom, NumberFormatCustomDollar } from './NumberFormatCust
 
 const ApplicantDetails = () => {
   const [payload, setPayload] = React.useState({
-    name: '',
-    username: '',
-    password: '',
-    dob: '',
-    FLAG_OWN_CAR: 0,
-    NAME_EDUCATION_TYPE: 0,
+    name: undefined,
+    username: undefined,
+    password: undefined,
+    dob: undefined,
+    FLAG_OWN_CAR: undefined,
+    NAME_EDUCATION_TYPE: undefined,
     DAYS_EMPLOYED: undefined,
-    REG_CITY_NOT_LIVE_CITY: 0,
+    REG_CITY_NOT_LIVE_CITY: undefined,
     AMT_GOODS_PRICE: undefined,
-    REG_CITY_NOT_WORK_CITY: 1,
-    DAYS_BIRTH: 0,
+    REG_CITY_NOT_WORK_CITY: undefined,
+    DAYS_BIRTH: undefined,
     AMT_CREDIT: undefined,
-    NAME_INCOME_TYPE: 0,
-    NAME_FAMILY_STATUS: 0,
-    OCCUPATION_TYPE: 0,
+    NAME_INCOME_TYPE: undefined,
+    NAME_FAMILY_STATUS: undefined,
+    OCCUPATION_TYPE: undefined,
     AMT_INCOME_TOTAL: undefined,
-    NAME_HOUSING_TYPE: 0,
-    FLAG_OWN_REALTY: 0,
+    NAME_HOUSING_TYPE: undefined,
+    FLAG_OWN_REALTY: undefined,
     CNT_CHILDREN: undefined,
   });
 
   function handleChange(event, colName) {
+    console.log(payload[colName]);
     if (event.target === undefined) {
       setPayload({ ...payload, [colName]: event });
     } else {
       setPayload({ ...payload, [colName]: event.target.value });
     }
+    console.log(payload[colName]);
   }
 
   const handleChangeNumber = (event) => {
@@ -51,7 +64,7 @@ const ApplicantDetails = () => {
       colSize: 6,
       type: 'select',
       options: {
-        'Single / not married': 0,
+        'Single / not married': undefined,
         Married: 1,
         'Civil marriage': 2,
         Widow: 3,
@@ -65,14 +78,14 @@ const ApplicantDetails = () => {
       title: 'Do you own a car?',
       colSize: 6,
       type: 'select',
-      options: { No: 0, Yes: 1 },
+      options: { No: undefined, Yes: 1 },
     },
     {
       col: 'FLAG_OWN_REALTY',
       title: 'Do you own a house?',
       colSize: 6,
       type: 'select',
-      options: { Yes: 0, No: 1 },
+      options: { Yes: undefined, No: 1 },
     },
     {
       col: 'NAME_HOUSING_TYPE',
@@ -80,7 +93,7 @@ const ApplicantDetails = () => {
       colSize: 6,
       type: 'select',
       options: {
-        'House / apartment': 0,
+        'House / apartment': undefined,
         'Rented apartment': 1,
         'With parents': 2,
         'Municipal apartment': 3,
@@ -93,7 +106,7 @@ const ApplicantDetails = () => {
       title: 'Are you currently living here?',
       colSize: 6,
       type: 'select',
-      options: { No: 0, Yes: 1 },
+      options: { No: undefined, Yes: 1 },
     },
     {
       col: 'NAME_EDUCATION_TYPE',
@@ -101,7 +114,7 @@ const ApplicantDetails = () => {
       colSize: 6,
       type: 'select',
       options: {
-        'Secondary / secondary special': 0,
+        'Secondary / secondary special': undefined,
         'Higher education': 1,
         'Incomplete higher': 2,
         'Lower secondary': 3,
@@ -115,7 +128,7 @@ const ApplicantDetails = () => {
       colSize: 6,
       type: 'select',
       options: {
-        Working: 0,
+        Working: undefined,
         'State servant': 1,
         'Commercial associate': 2,
         Pensioner: 3,
@@ -136,7 +149,7 @@ const ApplicantDetails = () => {
       title: 'Do you work in the same city as your home?',
       colSize: 6,
       type: 'select',
-      options: { No: 0, Yes: 1 },
+      options: { No: undefined, Yes: 1 },
     },
     {
       col: 'OCCUPATION_TYPE',
@@ -144,7 +157,7 @@ const ApplicantDetails = () => {
       colSize: 6,
       type: 'select',
       options: {
-        Laborers: 0,
+        Laborers: undefined,
         'Core staff': 1,
         Accountants: 2,
         Managers: 3,
@@ -248,11 +261,33 @@ const ApplicantDetails = () => {
                 </LocalizationProvider>
               </Grid>
             );
-            break;
+
+          case 'select':
+            return (
+              <Grid item xs={row.colSize}>
+                <FormControl fullWidth>
+                  <InputLabel>{row.title}</InputLabel>
+                  <Select
+                    value={payload[row.col]}
+                    label={row.title}
+                    onChange={(event) => handleChange(event, row.col)}
+                  >
+                    {Object.keys(row.options).map((opt) => {
+                      return <MenuItem value={row.options[opt]}>{opt}</MenuItem>;
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            );
+
           default:
             break;
         }
       })}
+
+      <Grid item xs={12}>
+        <Button onClick={() => console.log(payload)}>submit</Button>
+      </Grid>
     </Grid>
   );
 };
