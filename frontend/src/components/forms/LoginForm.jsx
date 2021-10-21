@@ -102,7 +102,10 @@ const LoginForm = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                onClick={() => history.push('/application')}
+                onClick={() => {
+                  localStorage.removeItem(lsKey, '');
+                  history.push('/application');
+                }}
               >
                 New here? Get Started
               </Button>
