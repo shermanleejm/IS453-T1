@@ -14,8 +14,8 @@ Place the files according to this
 
 1. Install docker on your computer
 1. run `docker compose up --build -d`
-1. The frontend application can be found at port [localhost:3000](http://localhost:3000)
-1. The backend application can be found at port [localhost:5000](http://localhost:5000)
+1. The frontend application can be found at [localhost:3000](http://localhost:3000)
+1. The backend application can be found at [localhost:5000](http://localhost:5000)
 1. run `docker compose down` when you are finished
 
 # Login credentials
