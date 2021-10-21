@@ -94,11 +94,10 @@ def new_application():
     values_sql = ",".join(
         [str(x[0]) if isinstance(x, list) else f"'{x}'" for x in list(data.values())]
     )
-    sql = f"insert or ignore into data ({keys_sql}) values ({values_sql})"
+    sql = f"insert or replace into data ({keys_sql}) values ({values_sql})"
     execute_sql(sql)
-    df = pd.DataFrame.from_dict(data)[final_cols_unbanked_refined]
-    preds = xg_reg.predict(df)
-    return jsonify(round(float(preds[0]), 5)), 200
+
+    return jsonify("done"), 200
 
 
 def get_data(username):
@@ -112,6 +111,21 @@ def get_data(username):
         res[keys[i]] = sql_res[0][i]
 
     return res
+
+
+@app.route("/credit_score", methods=["GET"])
+def credit_score():
+    username = request.args.get("username", None)
+    if not username:
+        return jsonify("Missing name param"), 422
+
+    data = get_data(username)
+    for k, v in data.items():
+        data[k] = [v]
+    df = pd.DataFrame.from_dict(data)[final_cols_unbanked_refined]
+    preds = xg_reg.predict(df)
+
+    return jsonify(round(float(preds[0]), 5)), 200
 
 
 @app.route("/predict_amount", methods=["GET"])

@@ -18,7 +18,10 @@ function App() {
             <AmountPage />
           </Route>
           <Route path="/application">
-            <ApplicationForm />
+            <ApplicationForm tab={0} />
+          </Route>
+          <Route path="/credit_score">
+            <ApplicationForm tab={1} />
           </Route>
           <Route path="/">
             <HomePage />
