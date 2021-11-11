@@ -39,12 +39,12 @@ const SorryPanel = () => {
 
 const AboutPanel = () => {
   return (
-    <div style={{ padding: '10%', height: '100%', textAlign: 'center' }}>
+    <div style={{ padding: '3% 15% 0 15%', height: '100%', textAlign: 'center' }}>
       <Grid
         container
         direction="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="flex-start"
         spacing={3}
       >
         <Grid item>

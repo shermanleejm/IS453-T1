@@ -140,7 +140,7 @@ const CreditScore = () => {
             <Typography variant="h5">
               Your credit score is{' '}
               <span style={{ color: 'blue' }}>{creditScoreLabel()}</span>, your estimated
-              loan limit is <span style={{ color: 'blue' }}>${amount}</span>.
+              loan limit is <span style={{ color: 'blue' }}>₱{amount}</span>.
             </Typography>
           </div>
         </Grid>

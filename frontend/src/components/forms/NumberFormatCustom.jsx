@@ -53,7 +53,7 @@ export const NumberFormatCustomDollar = React.forwardRef(function NumberFormatCu
       }}
       thousandSeparator
       isNumericString
-      prefix="$"
+      prefix="₱"
     />
   );
 });

@@ -18,7 +18,7 @@ const SwitchRender = (index) => {
 };
 
 const ApplicationForm = (props) => {
-  const [tabValue, setTabValue] = React.useState(props.tab);
+  const [tabValue, setTabValue] = React.useState(0);
   const history = useHistory();
 
   const SideNav = () => {
