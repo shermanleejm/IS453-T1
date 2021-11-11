@@ -78,7 +78,7 @@ const AboutPanel = () => {
 };
 
 const HomePage = () => {
-  const [selectedTab, setSelectedTab] = React.useState(3);
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
   function renderSwitch() {
     switch (selectedTab) {
@@ -115,7 +115,7 @@ const HomePage = () => {
           </Tabs>
         </Grid>
 
-        <Button style={{ width: '20%' }} component={Link} to="/admin">
+        <Button style={{ width: '20%' }}>
           login
         </Button>
       </Grid>
